@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "OrderChinaViet — Mua Hộ 1688 / Taobao / Pinduoduo",
+  "version": "2.0.0",
+  "description": "Tự động nhận diện sản phẩm, giá tiền, quy đổi VNĐ và thêm vào giỏ hàng OrderChinaViet trực tiếp từ 1688, Taobao, Tmall, Pinduoduo, Alibaba.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.1688.com/*",
+    "*://*.taobao.com/*",
+    "*://*.tmall.com/*",
+    "*://*.yangkeduo.com/*",
+    "*://*.pinduoduo.com/*",
+    "*://*.alibaba.com/*",
+    "*://*.aliexpress.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "OrderChinaViet — Mua Hộ",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.1688.com/*",
+        "*://*.taobao.com/*",
+        "*://*.tmall.com/*",
+        "*://*.yangkeduo.com/*",
+        "*://*.pinduoduo.com/*",
+        "*://*.alibaba.com/*",
+        "*://*.aliexpress.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["panel.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["logo.png", "icons/*", "panel.css"],
+      "matches": [
+        "*://*.1688.com/*",
+        "*://*.taobao.com/*",
+        "*://*.tmall.com/*",
+        "*://*.yangkeduo.com/*",
+        "*://*.pinduoduo.com/*",
+        "*://*.alibaba.com/*",
+        "*://*.aliexpress.com/*"
+      ]
+    }
+  ]
+}

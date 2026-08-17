@@ -1,0 +1,10 @@
+ALTER TABLE "TransportRequest" ADD COLUMN "recipientEmail" TEXT;
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupContactName" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupPhone" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupCountry" TEXT NOT NULL DEFAULT 'CN';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupCustomCountry" TEXT;
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupProvince" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupDistrict" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupWard" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupAddressLine" TEXT NOT NULL DEFAULT '';
+ALTER TABLE "TransportRequest" ADD COLUMN "pickupNote" TEXT;

@@ -1,0 +1,2 @@
+CREATE TABLE "AffiliateClick" ("id" TEXT NOT NULL PRIMARY KEY,"eventId" TEXT NOT NULL,"affiliateProfileId" TEXT NOT NULL,"ipAddress" TEXT,"userAgent" TEXT,"createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT "AffiliateClick_affiliateProfileId_fkey" FOREIGN KEY ("affiliateProfileId") REFERENCES "AffiliateProfile" ("id") ON DELETE RESTRICT ON UPDATE CASCADE);
+CREATE UNIQUE INDEX "AffiliateClick_eventId_key" ON "AffiliateClick"("eventId");

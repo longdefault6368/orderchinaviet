@@ -1,0 +1,5 @@
+CREATE TABLE "DeliveryRequest" ("id" TEXT NOT NULL PRIMARY KEY,"requestCode" TEXT NOT NULL,"customerId" TEXT NOT NULL,"address" TEXT NOT NULL,"contactPhone" TEXT NOT NULL,"shippingMethod" TEXT NOT NULL DEFAULT 'STANDARD',"feeVnd" INTEGER NOT NULL DEFAULT 0,"status" TEXT NOT NULL DEFAULT 'PENDING',"createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,"updatedAt" DATETIME NOT NULL,CONSTRAINT "DeliveryRequest_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE);
+CREATE UNIQUE INDEX "DeliveryRequest_requestCode_key" ON "DeliveryRequest"("requestCode");
+CREATE TABLE "_DeliveryRequestToParcel" ("A" TEXT NOT NULL,"B" TEXT NOT NULL,CONSTRAINT "_DeliveryRequestToParcel_A_fkey" FOREIGN KEY ("A") REFERENCES "DeliveryRequest"("id") ON DELETE CASCADE ON UPDATE CASCADE,CONSTRAINT "_DeliveryRequestToParcel_B_fkey" FOREIGN KEY ("B") REFERENCES "Parcel"("id") ON DELETE CASCADE ON UPDATE CASCADE);
+CREATE UNIQUE INDEX "_DeliveryRequestToParcel_AB_unique" ON "_DeliveryRequestToParcel"("A","B");
+CREATE INDEX "_DeliveryRequestToParcel_B_index" ON "_DeliveryRequestToParcel"("B");

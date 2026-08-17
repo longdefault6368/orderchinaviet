@@ -1,0 +1,183 @@
+================================================================================
+HE THONG LOGISTICS & NHAP HANG TRUNG - VIET: ORDERCHINAVIET
+TOM TAT TINH NANG DU AN - FLOW TAO VIDEO TIKTOK - BO PROMPT TAO ANH AI (9:16)
+================================================================================
+Ngay cap nhat: 15/08/2026
+Phien ban tai lieu: 1.0
+
+--------------------------------------------------------------------------------
+PHAN 1: TONG QUAN, CHUC NANG VA DAC TINH COT LOI CUA DU AN ORDERCHINAVIET
+--------------------------------------------------------------------------------
+
+1. GIOI THIEU DU AN:
+   - Ten nen tang: OrderChinaViet (OCV Logistics Management Platform).
+   - Linh vuc: Dịch vụ mua hộ hàng hóa, thanh toán hộ Alipay/WeChat và vận chuyển hàng hóa trọn gói từ Trung Quốc về Việt Nam (chính ngạch & tiểu ngạch).
+   - Thi truong & Nguon hang: 1688.com (nguồn sỉ tận xưởng), Taobao.com (bán lẻ & thời trang hot trend), Tmall.com (hàng thương hiệu chính hãng), Pinduoduo.
+   - Kho bai tap ket:
+     + Kho Trung Quoc: Kho Quang Chau (2,000m2) va Kho Bang Tuong (Lạng Sơn).
+     + Kho Viet Nam: Kho Ha Noi (tong kho phia Bac) va Kho TP. Ho Chi Minh (tong kho phia Nam).
+   - Thoi gian van chuyen: 3 - 5 ngay (tuyen Quang Chau - Ha Noi), 4 - 7 ngay (tuyen Quang Chau - TP.HCM).
+
+2. HE SINH THAI TINH NANG NGUOI DUNG & KHACH HANG (CUSTOMER ECOSYSTEM):
+   - Mua hang & Tim nguon hang thong minh:
+     + Tim kiem san pham bang hinh anh & tu khoa dich tieng Viet sang tieng Trung tu dong.
+     + Extension Chrome/Edge: Tu dong quy doi gia NDT (Te) sang VND theo ty gia thoi gian thuc tren 1688, Taobao, Tmall; them vao gio hang chi voi 1-click.
+   - Quan ly van chuyen & Theo doi hanh trinh (Tracking Real-time):
+     + Quet ma barcode kien hang tu dong, cap nhat trang thai: Da nhan tai kho TQ -> Dang van chuyen -> Da ve kho VN -> Dang giao hang -> Da giao thanh cong.
+     + Bao hiem hang hoa 100%, ho tro kiem dem va dong go, chong sock.
+   - Vi dien tu & Tai chinh:
+     + Nap tien tu dong qua VietQR, chuyen khoan Ngan hang, Alipay, Crypto USDT.
+     + Quan ly dong tien, lich su giao dich, phi luu kho, phi dich vu minh bach.
+
+3. HE THONG DOI TAC TIEP THI LIEN KET & TUYEN DUNG (AFFILIATE & CAREERS):
+   - Chinh sach thu nhap:
+     + Luong cung co dinh: 2.000.000 VND / thang danh cho Cong tac vien cham cong lam viec online (Remote 100%).
+     + Hoa hong don hang: 30% den 50% tron doi tren moi don hang khach nap.
+     + Thuong chao mung: Tang ngay 250.000 VND vao vi doi tac khi tao tai khoan (mo khoa rut khi co 3 khach hang dau tien phat sinh don).
+     + Thuong nong KPI Dua Top thang: Top 1 (+3Tr), Top 2 (+2Tr), Top 3 (+1Tr), Top 4-10 (+500k).
+   - Cong cu tiep thi cho Doi tac (Affiliate Portal):
+     + Bang dieu khien Dashboard theo doi luot click, so luong khach va hoa hong bien dong tung giay.
+     + Trinh tao link tiep thi kem ma QR tuy chinh theo tung chien dich (UTM Tag).
+     + Nut chia se nhanh 1-Click: Gui Zalo, dang Facebook, gui Telegram, chia se da nang.
+     + He thong cham cong 1-click, bang luong chi tiet va dang ky lich nghi phep (1 ngay phep huong luong/thang).
+     + Kho Media Kit: Mau bai viet quang cao, kich ban chat 1-1, kich ban video TikTok va bo banner HD.
+     + Bang vinh danh Top doi tac xuat sac (Leaderboard) theo tung thang.
+
+4. CONG QUAN TRI HE THONG ADMIN (ADMIN MANAGEMENT):
+   - Quan ly don hang, kien hang, nhan su, ung vien nop ho so careers.
+   - 1-Click tao link kich hoat doi tac cho ung vien qua token 7 ngay.
+   - Cau hinh ty le hoa hong, khoa/mo khoa tai khoan, doi mat khau tai khoan.
+   - Thong ke doanh so, bao cao tai chinh, quan ly yeu cau rut tien ngan hang.
+
+--------------------------------------------------------------------------------
+PHAN 2: FLOW TAO VIDEO TIKTOK CHUAN VIRAL (CONVERT RA KHACH & DOI TAC)
+--------------------------------------------------------------------------------
+
+QUY TRINH 5 BUOC SAN XUAT VIDEO TIKTOK BANG AI:
+- Buoc 1: Chon Chu De & Muc Tieu Video (Tuyen CTV Luong 2Tr + Hoa Hong HOAC Tu Van Nhap Hang 1688).
+- Buoc 2: Chon Kich Ban (Hook 3s dau -> Noi Dau/Thuc Trang -> Giai Phap OrderChinaViet -> CTA Kich Hoat).
+- Buoc 3: Tao Hinh Anh Minh Hoa 9:16 bang Prompts AI (Midjourney / Flux / Ideogram / DALL-E).
+- Buoc 4: Chuyen Anh Thanh Video chuyen dong bang AI (Runway Gen-3 / Luma Dream Machine / Kling AI / Pika).
+- Buoc 5: Long tieng AI (ElevenLabs / CapCut / Vbee) + Chen nhac nen trending + Caption dong + Link Bio.
+
+================================================================================
+FLOW 1: VIDEO TUYEN DUNG CTV SALES ONLINE / DOI TAC AFFILIATE (LUONG 2TR + 50%)
+================================================================================
+- Muc tieu: Thu hut sinh vien, me bim sua, dan van phong, seller tim viec remote thu nhap 5 - 15 trieu/thang.
+- Thoi luong: 35 - 45 giay.
+- Ty le khung hinh: 9:16 (Doc).
+
+[PHAN CANH CHI TIET]:
+* Canh 1 (00:00 - 00:04): HOOK DANH TRUNG TAM LY
+  - Visual: Mot co gai/chang trai tre ngoi tai quan cafe sang trong, cam laptop nhin vao man hinh dien thoai thong bao bien dong so du vi ngan hang.
+  - Text On Screen: "VIEC LAM ONLINE REMOTE - LUONG CUNG 2 TRIEU + HOA HONG 50%"
+  - Voiceover: "Tim viec lam online tai nha co luong cung 2 trieu moi thang kem hoa hong cuc khung? Xem ngay nhe!"
+
+* Canh 2 (00:04 - 00:15): GIOI THIEU MO HINH ORDERCHINAVIET
+  - Visual: Giao dien man hinh dashboard hien dai voi bieu do doanh thu, kien hang logistics van chuyen tu Trung Quoc ve Viet Nam.
+  - Text On Screen: "KHONG BO VON - KHONG OM HANG - DAO TAO TU A-Z"
+  - Voiceover: "Gia nhap doi ngu Doi tac Tiep thi OrderChinaViet - Nen tang logistics va nhap hang Trung - Viet hang dau. Ban khong can bo von, khong can om hang, duoc cap link va ma QR rieng."
+
+* Canh 3 (00:15 - 00:28): QUYEN LOI & TIEN THUONG NONG
+  - Visual: Hinh anh bieu tuong hop qua thuong 250k, bang vinh danh Leaderboard Top 1-2-3 va tien thuong nong cong vao vi.
+  - Text On Screen: "TANG NGAY 250K + THUONG DUA TOP 3 TRIEU"
+  - Voiceover: "Tao tai khoan la duoc tang ngay 250.000d vao vi. Chi can gioi thieu khach co nhu cau nhap hang 1688, Taobao la ban nhan hoa hong len den 50% tron doi."
+
+* Canh 4 (00:28 - 00:40): CALL TO ACTION (CTA)
+  - Visual: Ngon tay cham vao link dang ky tren Bio Profile, chuyen huong den trang Affiliate Portal OrderChinaViet.
+  - Text On Screen: "UNG TUYEN NGAY TAI LINK BIO DUOI DAY!"
+  - Voiceover: "Ung tuyen nhan muc luong cung va lam viec ngay hom nay tai duong link o phan tieu su trang ca nhan cua minh nhe!"
+
+================================================================================
+FLOW 2: VIDEO TU VAN NHAP HANG 1688 / TAOBAO GIA XUONG CHO DAN KINH DOANH
+================================================================================
+- Muc tieu: Thu hut chu shop Shopee, TikTok Shop, nguoi muon khoi nghiep nhap hang Trung Quoc gia tan goc.
+- Thoi luong: 40 - 50 giay.
+
+[PHAN CANH CHI TIET]:
+* Canh 1 (00:00 - 00:05): HOOK TO MO VE NGUON HANG
+  - Visual: Khung canh mo hop (unboxing) kien hang thoi trang/gia dung dep mat, tren tay la hoa don gia goc sieu re.
+  - Text On Screen: "TAI SAO CAC SHOP TIKTOK BAN GIA RE MA VAN CO LAI KHUNG?"
+  - Voiceover: "Bi quyet giup cac shop ban hang gia sieu re tren TikTok Shop ma van co loi nhuan khung?"
+
+* Canh 2 (00:05 - 00:18): TRUC TIEP TIM NGUON HANG TREN 1688
+  - Visual: Man hinh may tinh tim san pham bang hinh anh tren 1688, gia te quy doi sang VND cuc re qua Extension OrderChinaViet.
+  - Text On Screen: "NHAP THANG TU XUONG 1688 - KHONG QUA TRUNG GIAN"
+  - Voiceover: "Ho nhap truc tiep tu xuong 1688, Taobao qua ung dung OrderChinaViet. Xem gia tieng Viet, them vao gio chi voi mot cu click!"
+
+* Canh 3 (00:18 - 00:32): LOGISTICS CHUYEN NGHIEP & KHO QUANG CHAU
+  - Visual: Kho bai logistics hien dai tai Quang Chau voi hang nghin kien hang sap xep ngan nap, container van chuyen ve Ha Noi/TP.HCM.
+  - Text On Screen: "CUOC CHI TU 18K/KG - VE VIET NAM SAU 3-5 NGAY"
+  - Voiceover: "Kho Quang Chau rong hon 2.000m2 kiem dem barcode tu dong, cuoc van chuyen sieu re chi tu 18.000d/kg, ve tan tay chi sau 3 den 5 ngay!"
+
+* Canh 4 (00:32 - 00:45): CALL TO ACTION
+  - Visual: Logo OrderChinaViet noi bat kem uu dai mien phi tim xuong va bao gia.
+  - Text On Screen: "DANG KY TAI KHOAN TAI LINK BIO NHAN HO TRO 1-1!"
+  - Voiceover: "Dang ky tai khoan ngay tai link Bio de duoc nhan vien ho tro tim nguon hang mien phi nhe!"
+
+--------------------------------------------------------------------------------
+PHAN 3: BO PROMPTS TAO ANH AI CHO TIKTOK (9:16 ASPECT RATIO)
+--------------------------------------------------------------------------------
+(Dung truc tiep cho Midjourney v6, Flux.1, Stable Diffusion XL, Ideogram, DALL-E 3)
+Luu y: Tat ca prompt da duoc toi uu hoa ve anh sang, goc may, do chi tiet va ty le doc 9:16 chuan video TikTok.
+
+--------------------------------------------------------------------------------
+PROMPT 1: HINH ANH CO GAI/CHANG TRAI LAM VIEC REMOTE ONLINE (AFFILIATE CAREERS)
+--------------------------------------------------------------------------------
+[English Prompt for Midjourney / Flux]:
+A stylish Vietnamese Gen-Z young professional smiling warmly, sitting at a modern aesthetic coffee shop with lush greenery, working on a sleek modern laptop and holding a smartphone. The smartphone screen displays a glowing futuristic financial dashboard with green profit charts. Soft cinematic golden hour sunlight streaming through panoramic windows, depth of field, hyper-realistic, photorealistic, 8k resolution, cinematic lighting, shot on 35mm lens, f/1.8 --ar 9:16 --style raw --v 6.0
+
+[Tieng Viet Giai Thich]:
+Hinh anh mot ban tre Viet Nam dang yeu doi, phong cach lam viec tu do tai quan cafe dep, su dung laptop va dien thoai hien thi thong bao thu nhap tang truong, anh sang tu nhien am ap, goc nhin doc 9:16.
+
+--------------------------------------------------------------------------------
+PROMPT 2: KHO HANG LOGISTICS QUANG CHAU HIEN DAI & CONTAINER (LOGISTICS HUB)
+--------------------------------------------------------------------------------
+[English Prompt for Midjourney / Flux]:
+Vast ultra-modern smart logistics warehouse in Guangzhou China, high-tech automated sorting facility, high ceilings with industrial LED lighting, thousands of neat cardboard packages with barcode labels stacked on heavy-duty metallic racks, modern robotic conveyor belts, worker in high-visibility safety vest inspecting cargo with barcode scanner, large freight containers and trucks visible outside loading dock, ultra realistic, highly detailed, photorealistic 8k, cinematic depth of field, architectural photography --ar 9:16 --v 6.0
+
+[Tieng Viet Giai Thich]:
+Khung canh ben trong kho logistics thong minh tai Quang Chau, gia ke cao cap, he thong bang chuyen tu dong, hang hoa dong kien ngan nap chuyen nghiep, the hien quy mo uy tin cua OrderChinaViet.
+
+--------------------------------------------------------------------------------
+PROMPT 3: UNBOXING HANG NOI DIA TRUNG QUOC & DO TIENG VIET (SHOPPING & UNBOXING)
+--------------------------------------------------------------------------------
+[English Prompt for Midjourney / Flux]:
+Close-up dynamic POV shot of hands unboxing premium high quality trendy fashion and trendy consumer electronic products from a clean kraft delivery parcel box, bubble wrap, pristine brand new items, modern minimalist wooden table background, warm cozy aesthetic indoor studio lighting, commercial product photography, crystal clear details, 8k, ultra-sharp focus --ar 9:16 --v 6.0
+
+[Tieng Viet Giai Thich]:
+Goc may can canh POV dap hop (unboxing) cac mon do thoi trang, gia dung hot trend vua nhap tu 1688/Taobao ve con nguyen tem mac, tao cam giac hap dan muon mua hang ngay.
+
+--------------------------------------------------------------------------------
+PROMPT 4: BUC VINH DANH & TIEN THUONG NONG (LEADERBOARD & CASH BONUS)
+--------------------------------------------------------------------------------
+[English Prompt for Midjourney / Flux]:
+Luxurious 3D prestige champion podium with gleaming gold crown on top, sparkling golden particles and light rays floating in air, glowing numerical badges #1, #2, #3 on sleek glass pillars, elegant deep emerald and navy blue background with golden ribbons, award ceremony atmosphere, futuristic 3D render, octane render style, 8k, unreal engine 5 --ar 9:16 --v 6.0
+
+[Tieng Viet Giai Thich]:
+Buc vinh danh Top 1, Top 2, Top 3 sang trong voi vuong mien vang, anh sang lung linh tren nen xanh navy chuyen nghiep, phu hop lam anh bia hoac minh hoa cho Bang Vinh Danh va tien thuong nong Affiliate.
+
+--------------------------------------------------------------------------------
+PROMPT 5: GIAO DIEN MUA HANG EXTENSION & TY GIA VIET - TRUNG (E-COMMERCE TECH)
+--------------------------------------------------------------------------------
+[English Prompt for Midjourney / Flux]:
+Isometric 3D concept illustration of China-Vietnam cross-border e-commerce and logistics: floating laptop showcasing 1688 and Taobao shopping cart, glowing currency exchange rate conversion symbols (CNY Yen to VND Dong), automated transport cargo ship and airplane flying along glowing digital trade route line between China and Vietnam map, clean modern tech aesthetic, vibrant orange and emerald color palette, 8k resolution, minimalist 3D rendering --ar 9:16 --v 6.0
+
+[Tieng Viet Giai Thich]:
+Mo hinh 3D hien dai minh hoa tuyen van chuyen thuong mai dien tu xuyen bien gioi Trung - Viet, quy doi ty gia tu dong, may bay va container van chuyen nhanh chong giua hai quoc gia.
+
+--------------------------------------------------------------------------------
+PHAN 4: GOI Y CAPCUT / AI VIDEO TEMPLATE CHO BAN QUAN TRI & DOI TAC
+--------------------------------------------------------------------------------
+1. Text Overlay bat mat:
+   - Font chu: Inter Bold hoac Montserrat Black.
+   - Mau sac chu: Vang chanh (#FACC15), Trang (#FFFFFF), Vien den hoac do OCV (#FA3131).
+2. Am thanh TikTok Trending:
+   - Nhac beat EDM chill, lofi hiphop nhe nhang tao cam giac lam viec thu thai va truyen cam hung.
+   - Hoac am thanh "ting ting" thong bao tien ve tai khoan tai giay thu 3.
+3. Call To Action bat buoc:
+   - Nhac khan gia nhap ma gioi thieu de duoc giam phi dich vu hoac nhan 250k tien thuong chao mung.
+
+================================================================================
+HOAN TAT FILE TAI LIEU VA BO PROMPT ORDERCHINAVIET TIKTOK VIDEO FLOW
+================================================================================

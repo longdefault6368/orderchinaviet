@@ -1,0 +1,28 @@
+CREATE TABLE "TransportRequest" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "requestCode" TEXT NOT NULL,
+    "customerId" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
+    "categoryName" TEXT NOT NULL,
+    "goodsDescription" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL DEFAULT 1,
+    "weightKg" REAL NOT NULL,
+    "lengthCm" REAL NOT NULL,
+    "widthCm" REAL NOT NULL,
+    "heightCm" REAL NOT NULL,
+    "chargeableWeight" REAL NOT NULL,
+    "shippingMethod" TEXT NOT NULL DEFAULT 'ROAD',
+    "destinationWarehouse" TEXT NOT NULL,
+    "declaredValueVnd" INTEGER NOT NULL DEFAULT 0,
+    "insurance" BOOLEAN NOT NULL DEFAULT false,
+    "estimatedShippingFeeVnd" INTEGER NOT NULL,
+    "insuranceFeeVnd" INTEGER NOT NULL DEFAULT 0,
+    "estimatedTotalVnd" INTEGER NOT NULL,
+    "trackingCodeChina" TEXT,
+    "status" TEXT NOT NULL DEFAULT 'PENDING',
+    "adminNote" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "TransportRequest_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+CREATE UNIQUE INDEX "TransportRequest_requestCode_key" ON "TransportRequest"("requestCode");
