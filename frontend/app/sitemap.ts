@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
-import { SITE_URL } from '@/lib/api-client';
+
+const BASE_URL = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = (SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
-  const locales = ['vi', 'zh'];
+  const locales = ['vi', 'zh', 'en'];
 
   const staticRoutes = [
     '',
@@ -27,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const locale of locales) {
     for (const route of staticRoutes) {
       sitemapEntries.push({
-        url: `${baseUrl}/${locale}${route}`,
+        url: `${BASE_URL}/${locale}${route}`,
         lastModified: new Date(),
         changeFrequency: route === '' ? 'daily' : route.includes('rates') || route.includes('services') ? 'weekly' : 'monthly',
         priority: route === '' ? 1.0 : route.includes('rates') || route.includes('careers') || route.includes('services') ? 0.9 : 0.7,

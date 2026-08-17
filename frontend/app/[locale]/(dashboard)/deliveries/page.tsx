@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useState } from 'react';
 import { Boxes, MapPin, Plus, Truck, X } from 'lucide-react';
 import { apiFetch } from '@/lib/api-client';
