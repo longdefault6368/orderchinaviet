@@ -5,6 +5,17 @@ const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
 const TOKEN_KEY = 'ocv_access_token';
 const REFRESH_KEY = 'ocv_refresh_token';
 
+/**
+ * Returns dynamic client origin based on the current active browser environment
+ * (e.g. http://localhost:3000 on local, https://staging.domain.com on staging, https://orderchinaviet.com on live)
+ */
+export function getClientOrigin(): string {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin.replace(/\/$/, '');
+  }
+  return (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
+}
+
 let refreshPromise: Promise<string | null> | null = null;
 
 function readStorage(key: string) {

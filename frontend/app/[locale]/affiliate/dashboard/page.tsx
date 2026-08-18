@@ -26,9 +26,10 @@ import {
   Medal,
   MessageCircle,
   Send,
+  BookOpen,
 } from 'lucide-react';
 import { Locale } from '@/lib/i18n';
-import { affiliateStore, AffiliateAccount, ReferredCustomer } from '@/lib/affiliate-store';
+import { affiliateStore, AffiliateAccount, ReferredCustomer, buildReferralLink } from '@/lib/affiliate-store';
 import { authStore } from '@/lib/auth-store';
 
 export default function AffiliateDashboardPage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -69,7 +70,7 @@ export default function AffiliateDashboardPage({ params }: { params: Promise<{ l
     return () => { clearTimeout(timer); window.removeEventListener('orderchinaviet_affiliate_updated', refresh); window.removeEventListener('focus', refreshOnFocus); };
   }, []);
 
-  const referralLink = affiliate ? `${typeof window !== 'undefined' ? window.location.origin : ''}/${locale}/register?ref=${affiliate.affiliateCode}` : '';
+  const referralLink = affiliate ? buildReferralLink(affiliate.affiliateCode, locale) : '';
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -410,38 +411,17 @@ export default function AffiliateDashboardPage({ params }: { params: Promise<{ l
         })}
       </div>
 
-      {/* Hall of Fame / Leaderboard Spotlight Banner */}
-      <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-amber-500/10 border border-amber-300/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 border border-amber-300 flex items-center justify-center font-bold shrink-0">
-            <Trophy className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-[10px] font-bold font-mono uppercase bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
-              <Crown className="w-3 h-3 text-amber-600" />
-              <span>ĐUA TOP THÁNG 08/2026</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900 mt-0.5">
-              Bảng Vinh Danh Top Đối Tác &amp; Quỹ Thưởng 10.000.000 ₫
-            </h3>
-            <p className="text-xs text-slate-600">
-              Top 1: <strong className="text-amber-800">Nguyễn Hoàng Long</strong> (+3Tr) • Top 2: <strong className="text-slate-800">Trần Thị Mai Phương</strong> (+2Tr) • Top 3: <strong className="text-orange-800">Vũ Đức Thành</strong> (+1Tr)
-            </p>
-          </div>
-        </div>
-
-        <Link
-          href={`/${locale}/affiliate/leaderboard`}
-          className="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5 shrink-0 self-stretch md:self-auto justify-center cursor-pointer"
-        >
-          <span>Xem Bảng Vinh Danh</span>
-          <ArrowUpRight className="w-4 h-4" />
-        </Link>
-      </div>
-
       {/* Quick Action Navigation Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
+          {
+            title: 'Hướng Dẫn Tìm Khách',
+            desc: 'Cẩm nang đào tạo CTV, 4 nhóm khách hàng, quy trình 4 bước và poster',
+            href: `/${locale}/affiliate/guide`,
+            icon: BookOpen,
+            btnText: 'Đọc Cẩm Nang',
+            color: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+          },
           {
             title: 'Tạo Link & Mã QR Code',
             desc: 'Tự tạo link quảng cáo & QR code để chia sẻ lên Facebook, Zalo, TikTok',
@@ -469,7 +449,7 @@ export default function AffiliateDashboardPage({ params }: { params: Promise<{ l
         ].map((act, idx) => {
           const Icon = act.icon;
           return (
-            <div key={idx} className="bg-white border border-slate-200 p-5 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xs space-y-4 flex flex-col justify-between">
+            <div key={idx} className="bg-white border border-slate-200 p-5 rounded-2xl sm:rounded-3xl shadow-xs space-y-4 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className={`w-10 h-10 rounded-2xl border ${act.color} flex items-center justify-center font-bold`}>
                   <Icon className="w-5 h-5" />

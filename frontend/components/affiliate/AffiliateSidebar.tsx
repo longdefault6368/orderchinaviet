@@ -20,6 +20,7 @@ import {
   CalendarClock,
   Trophy,
   Headphones,
+  BookOpen,
 } from 'lucide-react';
 import { Locale } from '@/lib/i18n';
 import { authStore } from '@/lib/auth-store';
@@ -45,11 +46,6 @@ export function AffiliateSidebar({ locale, onCloseMobileSidebar }: AffiliateSide
       href: `/${locale}/affiliate/dashboard`,
       icon: LayoutDashboard,
       label: 'Tổng Quan Hệ Thống',
-    },
-    {
-      href: `/${locale}/affiliate/leaderboard`,
-      icon: Trophy,
-      label: 'Bảng Vinh Danh',
     },
     {
       href: `/${locale}/affiliate/links`,
@@ -86,6 +82,11 @@ export function AffiliateSidebar({ locale, onCloseMobileSidebar }: AffiliateSide
       icon: Headphones,
       label: 'Hỗ Trợ & Liên Hệ',
       badge: '24/7',
+    },
+    {
+      href: `/${locale}/affiliate/guide`,
+      icon: BookOpen,
+      label: 'Hướng Dẫn & Chính Sách',
     },
     {
       href: `/${locale}/affiliate/settings`,

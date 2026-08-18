@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { affiliateStore } from '@/lib/affiliate-store';
+import { setCookie } from '@/lib/auth-store';
 
 declare global {
   interface Window {
@@ -29,6 +30,7 @@ function SpinLoaderContent() {
     if (refCode) {
       if (typeof window !== 'undefined') {
         localStorage.setItem('ocv_pending_ref_code', refCode);
+        setCookie('ocv_pending_ref_code', refCode, 30);
       }
       affiliateStore.recordLinkClick(refCode);
     }

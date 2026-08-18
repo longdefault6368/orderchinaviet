@@ -334,10 +334,10 @@ export default function VanChuyenServicePage({ params }: { params: Promise<{ loc
                   >
                     {rates.map((cat) => (
                       <option key={cat.id} value={cat.id}>
-                        {cat.categoryName} — {cat.priceCnyOver3kg} ¥/kg (~{(cat.priceCnyOver3kg * cnyRate).toLocaleString('vi-VN')} ₫/kg)
+                        {cat.categoryName}
                       </option>
                     ))}
-                    <option value="OTHER">Khác (Nhập mặt hàng tùy chọn...)</option>
+                    <option value="OTHER">Hàng hóa khác</option>
                   </select>
 
                   {form.categoryId === 'OTHER' && (

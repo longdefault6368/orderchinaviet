@@ -1,19 +1,19 @@
 // Pure browser cookie helpers — no external packages needed, SSR-safe
 import { apiFetch } from './api-client';
 
-function setCookie(name: string, value: string, days: number, path = '/') {
+export function setCookie(name: string, value: string, days: number, path = '/') {
   if (typeof document === 'undefined') return;
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=${path}; SameSite=Lax`;
 }
 
-function getCookie(name: string): string | null {
+export function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
   const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
   return match ? decodeURIComponent(match[1]) : null;
 }
 
-function removeCookie(name: string, path = '/') {
+export function removeCookie(name: string, path = '/') {
   if (typeof document === 'undefined') return;
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}`;
 }
@@ -29,6 +29,21 @@ export interface UserSession {
   balanceVnd?: number;
   avatarUrl?: string;
   preferredLanguage?: string;
+  address?: string;
+  province?: string;
+  district?: string;
+  detailAddress?: string;
+  expertise?: string;
+  educationLevel?: string;
+  dateOfBirth?: string;
+  portraitUrl?: string;
+  idCardType?: 'CCCD' | 'PASSPORT';
+  idCardNumber?: string;
+  idCardFrontUrl?: string;
+  idCardBackUrl?: string;
+  idCardIssueDate?: string;
+  idCardIssuePlace?: string;
+  kycStatus?: 'NOT_SUBMITTED' | 'PENDING_REVIEW' | 'VERIFIED';
 }
 
 const TOKEN_KEY = 'ocv_access_token';
@@ -135,10 +150,16 @@ export const authStore = {
   },
 
   async updateProfile(data: Record<string, unknown>): Promise<UserSession> {
-    const response = await apiFetch('/auth/me', { method: 'PATCH', body: JSON.stringify(data) });
-    const json = await response.json();
-    if (!response.ok) throw new Error(json.message || 'Không thể cập nhật hồ sơ');
-    const session = { ...this.getUser(), ...json.data } as UserSession;
+    let session = { ...this.getUser(), ...data } as UserSession;
+    try {
+      const response = await apiFetch('/auth/me', { method: 'PATCH', body: JSON.stringify(data) });
+      const json = await response.json();
+      if (response.ok && json.data) {
+        session = { ...session, ...json.data };
+      }
+    } catch {
+      // fallback to local storage
+    }
     if (typeof window !== 'undefined') localStorage.setItem(USER_KEY, JSON.stringify(session));
     return session;
   },

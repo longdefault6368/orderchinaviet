@@ -23,7 +23,7 @@ import {
   Home,
 } from 'lucide-react';
 import { Locale } from '@/lib/i18n';
-import { authStore } from '@/lib/auth-store';
+import { authStore, getCookie, setCookie, removeCookie } from '@/lib/auth-store';
 import { userStore } from '@/lib/user-store';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
 import { apiFetch } from '@/lib/api-client';
@@ -103,7 +103,7 @@ function RegisterFormContent({ locale }: { locale: Locale }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Auto-capture ?ref= or ?referralCode= from URL or localStorage
+  // Auto-capture ?ref= or ?referralCode= from URL, localStorage or 30-day Cookie
   useEffect(() => {
     const refCode = searchParams.get('ref') || searchParams.get('referralCode');
     if (refCode) {
@@ -111,10 +111,11 @@ function RegisterFormContent({ locale }: { locale: Locale }) {
       void apiFetch('/affiliates/track-click', { method: 'POST', body: JSON.stringify({ affiliateCode: refCode, eventId: clickEventId.current }) }, false);
       if (typeof window !== 'undefined') {
         localStorage.setItem('ocv_pending_ref_code', refCode);
+        setCookie('ocv_pending_ref_code', refCode, 30);
       }
       setForm((prev) => ({ ...prev, referralCode: refCode }));
     } else if (typeof window !== 'undefined') {
-      const savedRef = localStorage.getItem('ocv_pending_ref_code');
+      const savedRef = localStorage.getItem('ocv_pending_ref_code') || getCookie('ocv_pending_ref_code');
       if (savedRef) {
         setForm((prev) => ({ ...prev, referralCode: savedRef }));
       }
@@ -159,7 +160,7 @@ function RegisterFormContent({ locale }: { locale: Locale }) {
     const finalProvinceOrAddress =
       country === 'OTHER' ? form.customAddress.trim() : form.province;
 
-    const finalRefCode = form.referralCode.trim() || (typeof window !== 'undefined' ? localStorage.getItem('ocv_pending_ref_code') || '' : '');
+    const finalRefCode = form.referralCode.trim() || (typeof window !== 'undefined' ? localStorage.getItem('ocv_pending_ref_code') || getCookie('ocv_pending_ref_code') || '' : '');
 
     setLoading(true);
     try {
@@ -192,6 +193,7 @@ function RegisterFormContent({ locale }: { locale: Locale }) {
       if (finalRefCode) {
         if (typeof window !== 'undefined') {
           localStorage.removeItem('ocv_pending_ref_code');
+          removeCookie('ocv_pending_ref_code');
         }
       }
 

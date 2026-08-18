@@ -601,12 +601,26 @@
     }
   }
 
-  function handleSubmit() {
+  async function getDynamicAppUrl() {
+    try {
+      if (location.hostname.includes('localhost')) return 'http://localhost:3000';
+    } catch (e) {}
+    try {
+      const response = await new Promise((resolve) => {
+        chrome.runtime.sendMessage({ action: 'GET_APP_URL' }, (res) => resolve(res));
+      });
+      if (response && response.url) return response.url;
+    } catch (e) {}
+    return 'https://orderchinaviet.com';
+  }
+
+  async function handleSubmit() {
     const cart = loadCart();
     if (!cart.length) return;
 
+    const baseUrl = await getDynamicAppUrl();
     const encodedCart = encodeURIComponent(JSON.stringify(cart));
-    const targetUrl = `http://localhost:3000/vi/orders?source=extension&cart=${encodedCart}`;
+    const targetUrl = `${baseUrl}/vi/orders?source=extension&cart=${encodedCart}`;
 
     chrome.runtime.sendMessage({ action: 'OPEN_TAB', url: targetUrl });
     showToast(`Đã gửi ${cart.length} sản phẩm về OrderChinaViet!`, 'success');
@@ -704,8 +718,9 @@
       sessionStorage.setItem(OCV_OPEN_KEY, panel?.classList.contains('ocv-minimized') ? 'minimized' : 'open');
     });
 
-    openSite?.addEventListener('click', () => {
-      chrome.runtime.sendMessage({ action: 'OPEN_TAB', url: 'http://localhost:3000/vi/orders' });
+    openSite?.addEventListener('click', async () => {
+      const baseUrl = await getDynamicAppUrl();
+      chrome.runtime.sendMessage({ action: 'OPEN_TAB', url: `${baseUrl}/vi/orders` });
     });
 
     decBtn?.addEventListener('click', () => {

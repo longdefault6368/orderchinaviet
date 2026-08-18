@@ -367,7 +367,7 @@ class NotificationStoreService {
     });
   }
 
-  // 9. Yêu Cầu Hoàn Tiền Cọc
+  // 9. Yêu Cầu Hoàn Tiền Cọc Đơn Hàng
   public notifyRefundRequest(data: { orderId: string; customerName: string; amountVnd: number; reason: string }): void {
     this.addNotification({
       title: `Yêu Cầu Hoàn Tiền Cọc: ${data.orderId}`,
@@ -380,6 +380,41 @@ class NotificationStoreService {
         amountVnd: data.amountVnd,
         customerName: data.customerName,
         targetUrl: '/admin/orders',
+      },
+    });
+  }
+
+  // 10. Đặt Cọc Yêu Cầu Vận Chuyển
+  public notifyTransportDeposit(data: { requestCode: string; customerName: string; amountVnd: number; paymentMethod: string; percentage?: number }): void {
+    this.addNotification({
+      title: `Đặt Cọc Vận Chuyển: ${data.requestCode}`,
+      message: `Khách hàng ${data.customerName} vừa thanh toán cọc ${data.amountVnd.toLocaleString('vi-VN')} ₫ (${data.percentage || 70}%) cho yêu cầu ${data.requestCode} qua ${data.paymentMethod}.`,
+      type: 'FINANCE_DEPOSIT',
+      targetRole: 'ADMIN',
+      linkUrl: '/admin/shipments',
+      metadata: {
+        requestCode: data.requestCode,
+        amountVnd: data.amountVnd,
+        paymentMethod: data.paymentMethod,
+        customerName: data.customerName,
+        targetUrl: '/admin/shipments',
+      },
+    });
+  }
+
+  // 11. Yêu Cầu Hoàn Cọc Vận Chuyển
+  public notifyTransportRefundRequest(data: { requestCode: string; customerName: string; amountVnd: number; reason: string }): void {
+    this.addNotification({
+      title: `Yêu Cầu Hoàn Cọc Vận Chuyển: ${data.requestCode}`,
+      message: `Khách hàng ${data.customerName} yêu cầu hoàn ${data.amountVnd.toLocaleString('vi-VN')} ₫ tiền cọc cho yêu cầu ${data.requestCode}. Lý do: ${data.reason || 'Không cung cấp'}`,
+      type: 'SYSTEM',
+      targetRole: 'ADMIN',
+      linkUrl: '/admin/shipments',
+      metadata: {
+        requestCode: data.requestCode,
+        amountVnd: data.amountVnd,
+        customerName: data.customerName,
+        targetUrl: '/admin/shipments',
       },
     });
   }

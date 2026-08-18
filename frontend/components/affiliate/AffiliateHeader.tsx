@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { Locale } from '@/lib/i18n';
 import { authStore, UserSession } from '@/lib/auth-store';
-import { affiliateStore, AffiliateAccount } from '@/lib/affiliate-store';
+import { affiliateStore, AffiliateAccount, buildReferralLink } from '@/lib/affiliate-store';
 import { userStore } from '@/lib/user-store';
 import { notificationStore, SystemNotification } from '@/lib/notification-store';
 import { LanguageSwitcher } from '../common/LanguageSwitcher';
@@ -112,7 +112,8 @@ export function AffiliateHeader({ locale, onToggleMobileSidebar }: AffiliateHead
     }
   }, []);
 
-  const referralLink = affiliate?.referralLink || '';
+  const partnerCode = affiliate?.affiliateCode || user?.customerCode || '';
+  const referralLink = partnerCode ? buildReferralLink(partnerCode, locale) : (affiliate?.referralLink || '');
 
   const copyReferralLink = () => {
     navigator.clipboard.writeText(referralLink);

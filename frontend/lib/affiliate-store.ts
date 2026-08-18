@@ -5,8 +5,13 @@
  */
 
 import { authStore } from './auth-store';
-import { apiFetch } from './api-client';
-import { SITE_URL } from './api-client';
+import { apiFetch, getClientOrigin } from './api-client';
+
+export function buildReferralLink(affCode: string, locale = 'vi'): string {
+  if (!affCode) return '';
+  const origin = getClientOrigin();
+  return `${origin}/${locale}/register?ref=${affCode}`;
+}
 
 export interface BankAccountDetails {
   bankName: string;
@@ -49,6 +54,22 @@ export interface AffiliateSession {
   fullName: string;
   email: string;
   phone: string;
+  avatarUrl?: string;
+  address?: string;
+  province?: string;
+  district?: string;
+  detailAddress?: string;
+  expertise?: string;
+  educationLevel?: string;
+  dateOfBirth?: string;
+  portraitUrl?: string;
+  idCardType?: 'CCCD' | 'PASSPORT';
+  idCardNumber?: string;
+  idCardFrontUrl?: string;
+  idCardBackUrl?: string;
+  idCardIssueDate?: string;
+  idCardIssuePlace?: string;
+  kycStatus?: 'NOT_SUBMITTED' | 'PENDING_REVIEW' | 'VERIFIED';
   promoBonusVnd: number; // 250,000 ₫
   promoBalanceVnd?: number;
   withdrawableBalanceVnd?: number;
@@ -62,6 +83,7 @@ export interface AffiliateSession {
   referralLink: string;
   createdAt: string;
   bankInfo?: BankAccountDetails;
+  payoutMethod?: 'WALLET' | 'BANK';
 }
 
 export type AffiliateAccount = AffiliateSession;
@@ -94,6 +116,7 @@ const DEFAULT_AFFILIATE: AffiliateSession = {
     accountNumber: '',
     accountName: '',
   },
+  payoutMethod: 'BANK',
 };
 
 const INITIAL_REFERRED_CUSTOMERS: ReferredCustomer[] = [];
@@ -105,11 +128,33 @@ export class AffiliateStore {
   private lastFetched = new Map<string, number>();
 
   private getStorage<T>(key: string, defaultVal: T): T {
-    return (this.memory.get(key) as T) ?? defaultVal;
+    if (this.memory.has(key)) {
+      return this.memory.get(key) as T;
+    }
+    if (typeof window !== 'undefined') {
+      try {
+        const item = localStorage.getItem(key);
+        if (item) {
+          const parsed = JSON.parse(item);
+          this.memory.set(key, parsed);
+          return parsed;
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return defaultVal;
   }
 
   private setStorage<T>(key: string, val: T): void {
     this.memory.set(key, val);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch {
+        // ignore
+      }
+    }
   }
 
   invalidateCache(): void {
@@ -141,7 +186,7 @@ export class AffiliateStore {
         totalEarnedVnd: 250000,
         withdrawnVnd: 0,
         clickCount: 0,
-        referralLink: `${SITE_URL}/vi/register?ref=${activeUser.customerCode || ''}`,
+        referralLink: buildReferralLink(activeUser.customerCode || ''),
         createdAt: new Date().toLocaleDateString('vi-VN'),
       };
       this.setStorage(STORAGE_KEY, session);
@@ -171,7 +216,7 @@ export class AffiliateStore {
       : 0;
 
     session.clickCount = Math.max(session.clickCount || 0, storedClicks);
-    session.referralLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/vi/register?ref=${session.affiliateCode}`;
+    session.referralLink = buildReferralLink(session.affiliateCode);
 
     const now = Date.now();
     const token = authStore.getToken() || (typeof window !== 'undefined' ? localStorage.getItem('ocv_access_token') : null);
@@ -197,7 +242,7 @@ export class AffiliateStore {
           clickCount: apiClicks,
           referredCustomersCount: profile._count?.referrals ?? session.referredCustomersCount,
           createdAt: new Date(profile.createdAt || Date.now()).toLocaleDateString('vi-VN'),
-          referralLink: `${window.location.origin}/vi/register?ref=${profile.affiliateCode}`,
+          referralLink: buildReferralLink(profile.affiliateCode),
         };
         this.setStorage(STORAGE_KEY, mapped);
         window.dispatchEvent(new Event('orderchinaviet_affiliate_updated'));
@@ -267,7 +312,7 @@ export class AffiliateStore {
       totalEarnedVnd: 250000,
       withdrawnVnd: 0,
       clickCount: 0,
-      referralLink: `${SITE_URL}/vi/register?ref=${randomCode}`,
+      referralLink: buildReferralLink(randomCode),
       createdAt: new Date().toLocaleDateString('vi-VN'),
     };
 
@@ -361,10 +406,14 @@ export class AffiliateStore {
     return this.getWithdrawals();
   }
 
-  updateBankInfo(bankInfo: BankAccountDetails): AffiliateSession {
+  updateBankInfo(bankInfo: BankAccountDetails, payoutMethod: 'WALLET' | 'BANK' = 'BANK'): AffiliateSession {
     const session = this.getAffiliate();
     session.bankInfo = bankInfo;
+    session.payoutMethod = payoutMethod;
     this.saveAffiliate(session);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('orderchinaviet_affiliate_updated'));
+    }
     return session;
   }
 

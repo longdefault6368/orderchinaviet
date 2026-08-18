@@ -96,6 +96,10 @@ model TransportRequest {
   estimatedShippingFeeVnd Int
   insuranceFeeVnd         Int      @default(0)
   estimatedTotalVnd       Int
+  depositPaidVnd          Int      @default(0)
+  depositPercentage       Int      @default(70)
+  depositRefundStatus     String?
+  depositRefundReason     String?
   trackingCodeChina       String?
   status                  String   @default("PENDING")
   adminNote               String?

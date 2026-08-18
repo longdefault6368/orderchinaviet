@@ -1,49 +1,30 @@
 'use client';
 
 import { use, useState, useEffect } from 'react';
-import Image from 'next/image';
 import {
   AlertCircle,
   Plus,
-  CheckCircle2,
   Clock,
-  X,
   Search,
-  RotateCcw,
-  Send,
   Truck,
   ShoppingBag,
   Wallet,
   Award,
   HelpCircle,
   XCircle,
-  ExternalLink,
-  ChevronDown,
   Filter,
-  MessageSquare,
   Package,
-  Layers,
   Sparkles,
-  LifeBuoy,
   Headphones,
-  Phone,
-  Mail,
-  Copy,
   Check,
-  MapPin,
+  CheckCircle2,
+  X,
+  Send,
 } from 'lucide-react';
 import { Locale } from '@/lib/i18n';
 import { apiFetch } from '@/lib/api-client';
 import { authStore } from '@/lib/auth-store';
 import { notificationStore } from '@/lib/notification-store';
-import { settingsStore, ContactSettings, DEFAULT_CONTACT_SETTINGS } from '@/lib/settings-store';
-
-// Brand Assets
-import whatsappImg from '@/assets/images/whatsapp.png';
-import zaloImg from '@/assets/images/zalo.png';
-import telegramImg from '@/assets/images/telegram.webp';
-import wechatImg from '@/assets/images/wechat.webp';
-import facebookImg from '@/assets/images/facebook.webp';
 
 export interface DisputeItem {
   id: string;
@@ -51,8 +32,8 @@ export interface DisputeItem {
   category: string;
   parentCategory: string;
   typeLabel: string;
-  parcelCode?: string;
   title: string;
+  parcelCode?: string;
   description: string;
   status: 'OPEN' | 'PROCESSING' | 'RESOLVED' | 'REJECTED';
   statusLabel: string;
@@ -62,90 +43,75 @@ export interface DisputeItem {
   adminReply?: string;
 }
 
+export interface DisputeCategoryOption {
+  value: string;
+  label: string;
+  icon: any;
+  hint: string;
+}
+
 export interface DisputeCategoryGroup {
   id: string;
   name: string;
-  badge: string;
   icon: any;
-  placeholderCode: string;
-  codeLabel: string;
-  items: {
-    value: string;
-    label: string;
-    description: string;
-  }[];
+  color: string;
+  codeLabel?: string;
+  placeholderCode?: string;
+  items: DisputeCategoryOption[];
 }
 
 export const DISPUTE_CATEGORY_GROUPS: DisputeCategoryGroup[] = [
   {
     id: 'SHIPPING',
-    name: 'Vận Chuyển & Giao Nhận',
-    badge: 'Logistics',
+    name: 'Vận Chuyển & Kho Bãi',
     icon: Truck,
-    codeLabel: 'Mã Kiện Hàng / Vận Đơn TQ',
-    placeholderCode: 'Ví dụ: SF12345678, YT987654321, OCV-PARCEL-...',
+    color: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+    codeLabel: 'Mã Kiện Hàng / Mã Vận Đơn (Nếu có)',
+    placeholderCode: 'Ví dụ: PKG-8809 hoặc 7583920192',
     items: [
-      { value: 'SHIPPING_DELAY', label: 'Vận Chuyển Chậm Trễ', description: 'Kiện hàng về chậm quá lịch trình cam kết xuất kho' },
-      { value: 'SHIPPING_DAMAGED', label: 'Hàng Bị Hư Hỏng / Bể Vỡ', description: 'Móp méo, rách bao bì, ướt hoặc vỡ nát trong quá trình vận chuyển' },
-      { value: 'SHIPPING_LOST', label: 'Thất Lạc Kiện Hàng', description: 'Mã vận đơn không cập nhật hành trình hoặc thất lạc tại kho' },
-      { value: 'SHIPPING_WRONG_WEIGHT', label: 'Sai Lệch Cân Nặng / Thể Tích', description: 'Khối lượng tính cước chênh lệch so với thực tế nhận hàng' },
-      { value: 'SHIPPING_WRONG_ADDRESS', label: 'Giao Nhầm Địa Chỉ / Shipper', description: 'Giao sai người nhận hoặc shipper không liên hệ giao hàng' },
+      { value: 'SHIPPING_DELAY', label: 'Hàng về chậm so với cam kết', icon: Clock, hint: 'Quá thời hạn ước tính nhưng kiện hàng chưa đến kho đích' },
+      { value: 'SHIPPING_DAMAGED', label: 'Hàng hóa bị móp méo, hư hại', icon: AlertCircle, hint: 'Bao bì hoặc sản phẩm có dấu hiệu rách vỡ, ướt nước' },
+      { value: 'SHIPPING_LOST', label: 'Thất lạc kiện hàng / Mất hàng', icon: XCircle, hint: 'Mã vận đơn ngừng cập nhật hoặc không tìm thấy tại kho' },
+      { value: 'SHIPPING_WRONG_WEIGHT', label: 'Sai lệch cân nặng / Thể tích tính cước', icon: Package, hint: 'Cân đo lại tại kho đích có chênh lệch so với phiếu xuất' },
     ],
   },
   {
-    id: 'ORDER',
-    name: 'Đơn Mua Hộ (1688 / Taobao / Tmall)',
-    badge: 'Mua Hộ',
+    id: 'PURCHASE',
+    name: 'Đơn Hàng Mua Hộ TMĐT',
     icon: ShoppingBag,
-    codeLabel: 'Mã Đơn Mua Hộ (Order Code)',
-    placeholderCode: 'Ví dụ: ORD-1786938..., OCV-BUY-...',
+    color: 'text-sky-700 bg-sky-50 border-sky-200',
+    codeLabel: 'Mã Đơn Hàng Mua Hộ (Nếu có)',
+    placeholderCode: 'Ví dụ: ORD-2026-8809',
     items: [
-      { value: 'ORDER_WRONG_ITEM', label: 'Giao Sai Mẫu / Sai Màu / Sai Size', description: 'Sản phẩm nhận được không đúng với link hoặc phân loại đã đặt' },
-      { value: 'ORDER_MISSING_QUANTITY', label: 'Shop Giao Thiếu Số Lượng', description: 'Số lượng sản phẩm trong kiện ít hơn số lượng đặt mua' },
-      { value: 'ORDER_SELLER_NOT_SHIPPED', label: 'Shop Trung Quốc Không Phát Hàng', description: 'Người bán trì hoãn giao hàng hoặc cung cấp mã vận đơn ảo' },
-      { value: 'ORDER_PRICE_DISPUTE', label: 'Sai Lệch Giá Mua Hộ', description: 'Chênh lệch giữa giá trên web sàn và tiền trừ trong ví' },
-      { value: 'ORDER_RETURN_REFUND', label: 'Yêu Cầu Đổi Trả & Hoàn Tiền', description: 'Đổi trả hàng cho shop Trung Quốc và thu hồi tiền hàng' },
+      { value: 'PURCHASE_WRONG_ITEM', label: 'Shop TQ giao sai mẫu / Màu / Size', icon: AlertCircle, hint: 'Sản phẩm nhận được không đúng như link đặt ban đầu' },
+      { value: 'PURCHASE_MISSING_QTY', label: 'Thiếu số lượng sản phẩm', icon: Package, hint: 'Shop phát thiếu số lượng kiện hoặc số lượng cái' },
+      { value: 'PURCHASE_SELLER_DELAY', label: 'Shop TQ chậm phát hàng / Không gửi', icon: Clock, hint: 'Đã thanh toán nhưng sau 48h shop vẫn chưa điền mã vận đơn' },
+      { value: 'PURCHASE_DEFECTIVE', label: 'Sản phẩm lỗi kỹ thuật / Không hoạt động', icon: XCircle, hint: 'Hàng điện tử hoặc máy móc bị lỗi ngay khi mở hộp' },
     ],
   },
   {
     id: 'FINANCE',
-    name: 'Tài Chính, Ví Tiền & Nạp Rút',
-    badge: 'Ví & Nạp Rút',
+    name: 'Tài Chính & Nạp / Rút Ví',
     icon: Wallet,
-    codeLabel: 'Mã Giao Dịch / Lệnh Nạp Rút',
-    placeholderCode: 'Ví dụ: DEP-178..., WDR-178..., Mã giao dịch ngân hàng',
+    color: 'text-amber-700 bg-amber-50 border-amber-200',
+    codeLabel: 'Mã Giao Dịch / STK Ngân Hàng',
+    placeholderCode: 'Ví dụ: PAY-1002 hoặc STK MBBank',
     items: [
-      { value: 'FINANCE_DEPOSIT_NOT_CREDITED', label: 'Nạp Tiền Chưa Cộng Số Dư', description: 'Đã chuyển khoản thành công qua ngân hàng/VietQR nhưng ví chưa tăng tiền' },
-      { value: 'FINANCE_WITHDRAWAL_DELAY', label: 'Yêu Cầu Rút Tiền Chậm Trễ', description: 'Lệnh rút tiền về tài khoản ngân hàng quá thời gian quy định' },
-      { value: 'FINANCE_EXCHANGE_RATE', label: 'Thắc Mắc Tỷ Giá / Đổi Tiền Alipay', description: 'Tỷ giá áp dụng không khớp hoặc giao dịch đổi tiền có vấn đề' },
-      { value: 'FINANCE_WRONG_DEDUCTION', label: 'Bị Trừ Tiền Không Rõ Lý Do', description: 'Trừ tiền sai đơn hàng hoặc trừ trùng nhiều lần' },
+      { value: 'FINANCE_TOPUP_DELAY', label: 'Nạp tiền ví chưa thấy cộng số dư', icon: Clock, hint: 'Đã quét QR chuyển khoản ngân hàng thành công nhưng ví chưa lên tiền' },
+      { value: 'FINANCE_WITHDRAW_DELAY', label: 'Yêu cầu rút tiền chưa nhận được', icon: Wallet, hint: 'Yêu cầu rút tiền về tài khoản ngân hàng quá thời hạn quy định' },
+      { value: 'FINANCE_RATE_ISSUE', label: 'Thắc mắc tỷ giá hoặc phụ phí', icon: HelpCircle, hint: 'Cần giải trình về chênh lệch tỷ giá NDT hoặc phụ phí bảo hiểm/đóng gỗ' },
     ],
   },
   {
     id: 'AFFILIATE',
-    name: 'Tiếp Thị Liên Kết (Affiliate Partner)',
-    badge: 'Đối Tác',
+    name: 'Đối Tác Tiếp Thị & Thưởng',
     icon: Award,
-    codeLabel: 'Mã Đối Tác / Mã Khách Tuyến Dưới',
-    placeholderCode: 'Ví dụ: OCV_AFF_..., OCV123456...',
+    color: 'text-indigo-700 bg-indigo-50 border-indigo-200',
+    codeLabel: 'Mã Giới Thiệu / Mã Khách Hàng',
+    placeholderCode: 'Ví dụ: OCV8888 hoặc Mã Đơn',
     items: [
-      { value: 'AFFILIATE_MISSING_COMMISSION', label: 'Thiếu Hoa Hồng Đơn Khách Giới Thiệu', description: 'Khách tuyến dưới đã hoàn tất đơn nhưng hoa hồng chưa cộng vào ví' },
-      { value: 'AFFILIATE_LINK_TRACKING', label: 'Lỗi Link / Mã QR Không Ghi Nhận', description: 'Khách hàng đăng ký qua link ref nhưng không vào danh sách thành viên' },
-      { value: 'AFFILIATE_BONUS_UNLOCK', label: 'Mở Khóa Thưởng 250.000 ₫', description: 'Đã đạt điều kiện 3 khách phát sinh đơn nhưng chưa mở khóa rút tiền' },
-      { value: 'AFFILIATE_SALARY_ATTENDANCE', label: 'Thắc Mắc Chấm Công & Lương Cứng', description: 'Sai lệch số ngày công hoặc mức lương cứng 2.000.000 ₫' },
-    ],
-  },
-  {
-    id: 'OTHER',
-    name: 'Dịch Vụ, Tài Khoản & Khác',
-    badge: 'Hỗ Trợ',
-    icon: HelpCircle,
-    codeLabel: 'Mã Tham Chiếu (Nếu Có)',
-    placeholderCode: 'Mã đơn hàng, mã khiếu nại hoặc thông tin liên quan',
-    items: [
-      { value: 'ACCOUNT_LOGIN_ISSUE', label: 'Lỗi Tài Khoản / Đăng Nhập', description: 'Không nhận được mã xác thực, quên mật khẩu hoặc tài khoản bị khóa' },
-      { value: 'CUSTOMER_SERVICE_FEEDBACK', label: 'Góp Ý Thái Độ Phục Vụ CSKH', description: 'Phản ánh thái độ làm việc của nhân viên hỗ trợ / kho bãi' },
-      { value: 'OTHER_INQUIRY', label: 'Các Yêu Cầu Khác', description: 'Những vấn đề khác chưa được phân loại ở các mục trên' },
+      { value: 'AFFILIATE_COMMISSION_MISSING', label: 'Chưa ghi nhận hoa hồng đơn hàng', icon: Award, hint: 'Khách hàng cấp dưới đã hoàn tất đơn nhưng hoa hồng chưa cộng vào ví' },
+      { value: 'AFFILIATE_BONUS_LOCKED', label: 'Thắc mắc điều kiện mở khóa 250k', icon: Sparkles, hint: 'Cần hỗ trợ về số lượng khách hàng hợp lệ để rút thưởng chào mừng' },
     ],
   },
 ];
@@ -157,10 +123,6 @@ export default function DisputesPage({ params }: { params: Promise<{ locale: Loc
   const [search, setSearch] = useState('');
   const [parentCategoryFilter, setParentCategoryFilter] = useState<string>('ALL');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
-
-  // Contact Settings State
-  const [settings, setSettings] = useState<ContactSettings>(DEFAULT_CONTACT_SETTINGS);
-  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Form State
   const [parentCategory, setParentCategory] = useState<string>('SHIPPING');
@@ -183,19 +145,6 @@ export default function DisputesPage({ params }: { params: Promise<{ locale: Loc
       if (match) return { group: g, item: match };
     }
     return null;
-  };
-
-  const handleCopy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 2000);
-  };
-
-  const getWhatsappUrl = (val: string) => {
-    if (!val) return 'https://wa.me/84352308304';
-    if (val.startsWith('http')) return val;
-    const cleanNumber = val.replace(/[^0-9]/g, '');
-    return `https://wa.me/${cleanNumber}`;
   };
 
   const fetchDisputes = async () => {
@@ -250,18 +199,7 @@ export default function DisputesPage({ params }: { params: Promise<{ locale: Loc
   };
 
   useEffect(() => {
-    setSettings(settingsStore.getSettings());
-    const handleSettingsUpdate = () => setSettings(settingsStore.getSettings());
-    window.addEventListener('orderchinaviet_settings_updated', handleSettingsUpdate);
-    void settingsStore.refreshSettings(true).then((data) => {
-      if (data) setSettings(data);
-    });
-
     fetchDisputes();
-
-    return () => {
-      window.removeEventListener('orderchinaviet_settings_updated', handleSettingsUpdate);
-    };
   }, []);
 
   const handleParentCategoryChange = (newParent: string) => {
@@ -370,237 +308,7 @@ export default function DisputesPage({ params }: { params: Promise<{ locale: Loc
         </button>
       </div>
 
-      {/* ── SECTION 1: KÊNH LIÊN HỆ NHANH TRỰC TIẾP (FROM ADMIN SETTINGS & ASSETS) ── */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <LifeBuoy className="w-4 h-4 text-emerald-600" />
-            <h2 className="text-sm font-bold text-slate-900">1. Kênh Liên Hệ Nhanh Trực Tiếp</h2>
-          </div>
-          <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
-            Hỗ trợ đa kênh 24/7 từ Ban Quản Trị
-          </span>
-        </div>
-
-        {/* Compact Grid of Contact Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2.5">
-          {/* WhatsApp */}
-          {settings.showWhatsappLink !== false && (
-            <div className="bg-white border border-slate-200 hover:border-emerald-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center p-1 shrink-0">
-                  <Image src={whatsappImg} alt="WhatsApp" width={20} height={20} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-md">
-                  WhatsApp
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">WhatsApp</span>
-                <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.whatsappLink || '+84 352 308 304'}>
-                  {settings.whatsappLink || '+84 352 308 304'}
-                </span>
-              </div>
-              <a
-                href={getWhatsappUrl(settings.whatsappLink)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <ExternalLink className="w-3 h-3" />
-                <span>Chat</span>
-              </a>
-            </div>
-          )}
-
-          {/* Zalo */}
-          {settings.showZaloLink !== false && (
-            <div className="bg-white border border-slate-200 hover:border-blue-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center p-1 shrink-0">
-                  <Image src={zaloImg} alt="Zalo" width={20} height={20} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-md">
-                  Zalo
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">Zalo Chat</span>
-                <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.zaloLink || '0352308304'}>
-                  {settings.zaloLink || '0352308304'}
-                </span>
-              </div>
-              <a
-                href={(settings.zaloLink || 'https://zalo.me/84352308304').startsWith('http') ? (settings.zaloLink || 'https://zalo.me/84352308304') : `https://${settings.zaloLink}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-1.5 px-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <ExternalLink className="w-3 h-3" />
-                <span>Mở Zalo</span>
-              </a>
-            </div>
-          )}
-
-          {/* Telegram */}
-          {settings.showTelegramLink !== false && (
-            <div className="bg-white border border-slate-200 hover:border-sky-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center p-1 shrink-0">
-                  <Image src={telegramImg} alt="Telegram" width={20} height={20} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-1.5 py-0.5 rounded-md">
-                  Telegram
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">Telegram</span>
-                <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.telegramLink || '@orderchinaviet'}>
-                  {settings.telegramLink || '@orderchinaviet'}
-                </span>
-              </div>
-              <a
-                href={(settings.telegramLink || 'https://t.me/orderchinaviet').startsWith('http') ? (settings.telegramLink || 'https://t.me/orderchinaviet') : `https://${settings.telegramLink}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-1.5 px-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <ExternalLink className="w-3 h-3" />
-                <span>Mở Chat</span>
-              </a>
-            </div>
-          )}
-
-          {/* WeChat */}
-          {settings.showWechatId !== false && (
-            <div className="bg-white border border-slate-200 hover:border-emerald-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center p-1 shrink-0">
-                  <Image src={wechatImg} alt="WeChat" width={20} height={20} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-md">
-                  WeChat
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">WeChat ID</span>
-                <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.wechatId || 'VN_Logistics_CN'}>
-                  {settings.wechatId || 'VN_Logistics_CN'}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => handleCopy(settings.wechatId || 'VN_Logistics_CN', 'wechat')}
-                className="w-full py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                {copiedKey === 'wechat' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                <span>{copiedKey === 'wechat' ? 'Đã Chép' : 'Chép ID'}</span>
-              </button>
-            </div>
-          )}
-
-          {/* Hotline */}
-          {settings.showHotline !== false && (
-            <div className="bg-white border border-slate-200 hover:border-rose-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
-                  <Phone className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200 px-1.5 py-0.5 rounded-md">
-                  Hotline
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">Tổng Đài</span>
-                <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.hotline || '+84 352 308 304'}>
-                  {settings.hotline || '+84 352 308 304'}
-                </span>
-              </div>
-              <a
-                href={`tel:${(settings.hotline || '+84352308304').replace(/\s+/g, '')}`}
-                className="w-full py-1.5 px-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <Phone className="w-3 h-3" />
-                <span>Gọi Ngay</span>
-              </a>
-            </div>
-          )}
-
-          {/* Email */}
-          {settings.showEmail !== false && (
-            <div className="bg-white border border-slate-200 hover:border-amber-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
-                  <Mail className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded-md">
-                  Email
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">Email CSKH</span>
-                <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.email || 'support@orderchinaviet.com'}>
-                  {settings.email || 'support@orderchinaviet.com'}
-                </span>
-              </div>
-              <a
-                href={`mailto:${settings.email || 'support@orderchinaviet.com'}`}
-                className="w-full py-1.5 px-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <Mail className="w-3 h-3" />
-                <span>Gửi Mail</span>
-              </a>
-            </div>
-          )}
-
-          {/* Facebook */}
-          {settings.showFacebookLink !== false && (
-            <div className="bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-              <div className="flex items-center justify-between gap-1.5">
-                <div className="w-7 h-7 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center p-1 shrink-0">
-                  <Image src={facebookImg} alt="Facebook" width={20} height={20} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-[9px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded-md">
-                  Cộng Đồng
-                </span>
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-bold text-slate-900 block truncate">Facebook</span>
-                <span className="text-[10px] text-slate-500 block truncate" title="Group & Fanpage">
-                  Fanpage CSKH
-                </span>
-              </div>
-              <a
-                href={(settings.facebookLink || 'https://facebook.com/orderchinaviet').startsWith('http') ? (settings.facebookLink || 'https://facebook.com/orderchinaviet') : `https://${settings.facebookLink}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-1.5 px-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <ExternalLink className="w-3 h-3" />
-                <span>Vào Group</span>
-              </a>
-            </div>
-          )}
-        </div>
-
-        {/* Slim Info Bar for Working Hours & Warehouse Locations */}
-        <div className="px-4 py-2.5 bg-white border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-600 shadow-2xs">
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-            <span><strong>Giờ hỗ trợ:</strong> {settings.workingHours || 'Thứ 2 – Thứ 7: 8:00 AM – 18:00 PM'}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-            <span className="truncate"><strong>Kho VN:</strong> {settings.addressVietnam || '22 Hữu Nghị, Móng Cái 1, Quảng Ninh'}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-            <span className="truncate"><strong>Kho TQ:</strong> {settings.addressChina || 'Dongxing, Guangxi, China'}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ── SECTION 2: MINI KPI SUMMARY CARDS ── */}
+      {/* ── KPI SUMMARY CARDS ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div
           onClick={() => setStatusFilter('ALL')}
@@ -841,9 +549,9 @@ export default function DisputesPage({ params }: { params: Promise<{ locale: Loc
                     </option>
                   ))}
                 </select>
-                {activeSubItem?.description && (
+                {activeSubItem?.hint && (
                   <p className="text-[11px] text-slate-500 mt-1 italic pl-1">
-                    Ghi chú: {activeSubItem.description}
+                    Ghi chú: {activeSubItem.hint}
                   </p>
                 )}
               </div>

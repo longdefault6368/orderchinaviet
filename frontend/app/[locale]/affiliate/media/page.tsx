@@ -29,24 +29,17 @@ import {
 import { Locale } from '@/lib/i18n';
 import { affiliateStore, AffiliateAccount } from '@/lib/affiliate-store';
 import { authStore } from '@/lib/auth-store';
-import { SITE_URL } from '@/lib/api-client';
+import { getClientOrigin } from '@/lib/api-client';
 
 export default function AffiliateMediaPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = use(params);
   const [affiliate, setAffiliate] = useState<AffiliateAccount | null>(null);
   const [activeTab, setActiveTab] = useState<'posts' | 'chats' | 'video' | 'banners' | 'guidelines'>('posts');
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
-
-  const getBaseUrl = () => {
-    if (typeof window !== 'undefined' && window.location.origin) {
-      return window.location.origin.replace(/\/$/, '');
-    }
-    return (SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
-  };
-
-  const baseUrl = getBaseUrl();
+  const [baseUrl, setBaseUrl] = useState('');
 
   useEffect(() => {
+    setBaseUrl(getClientOrigin());
     const currentSession = authStore.getUser();
     const data = affiliateStore.getAffiliate();
     if (currentSession?.customerCode && currentSession.customerCode.startsWith('OCV_AFF')) {
@@ -55,8 +48,9 @@ export default function AffiliateMediaPage({ params }: { params: Promise<{ local
     setAffiliate(data);
   }, []);
 
+  const effectiveBaseUrl = baseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
   const partnerCode = affiliate?.affiliateCode || 'OCV_AFF_888888';
-  const partnerLink = `${baseUrl}/${locale}/register?ref=${partnerCode}&utm_source=media_kit`;
+  const partnerLink = `${effectiveBaseUrl}/${locale}/register?ref=${partnerCode}&utm_source=media_kit`;
 
   const copyToClipboard = (content: string, id: string) => {
     navigator.clipboard.writeText(content);

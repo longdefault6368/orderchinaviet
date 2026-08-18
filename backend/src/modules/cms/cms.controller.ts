@@ -154,8 +154,13 @@ cmsRouter.post('/job-applications/:id/generate-link', authenticate, authorize(..
       },
     });
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-    const activationUrl = `${clientUrl}/vi/affiliate/activate?token=${token}`;
+    const clientUrl =
+      (req.headers.origin as string) ||
+      (req.headers.host ? `${req.protocol || 'http'}://${req.headers.host}` : '') ||
+      process.env.CLIENT_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      'http://localhost:3000';
+    const activationUrl = `${clientUrl.replace(/\/$/, '')}/vi/affiliate/activate?token=${token}`;
 
     res.json({
       success: true,

@@ -20,35 +20,31 @@ import {
 } from 'lucide-react';
 import { Locale } from '@/lib/i18n';
 import { affiliateStore, AffiliateAccount } from '@/lib/affiliate-store';
-import { SITE_URL } from '@/lib/api-client';
+import { getClientOrigin } from '@/lib/api-client';
 
 export default function AffiliateLinksPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = use(params);
   const [affiliate, setAffiliate] = useState<AffiliateAccount | null>(null);
-
-  const getBaseUrl = () => {
-    if (typeof window !== 'undefined' && window.location.origin) {
-      return window.location.origin.replace(/\/$/, '');
-    }
-    return (SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
-  };
-
-  const baseUrl = getBaseUrl();
-  const [targetUrl, setTargetUrl] = useState(`${baseUrl}/${locale}`);
+  const [baseUrl, setBaseUrl] = useState('');
+  const [targetUrl, setTargetUrl] = useState('');
   const [campaignTag, setCampaignTag] = useState('facebook_ad');
   const [copied, setCopied] = useState(false);
   const [copiedMsgIdx, setCopiedMsgIdx] = useState<number | null>(null);
 
   useEffect(() => {
+    const origin = getClientOrigin();
+    setBaseUrl(origin);
+    setTargetUrl(`${origin}/${locale}`);
     const current = affiliateStore.getAffiliate();
     setAffiliate(current);
-    setTargetUrl(`${getBaseUrl()}/${locale}`);
   }, [locale]);
 
+  const effectiveBaseUrl = baseUrl || (typeof window !== 'undefined' ? window.location.origin : '');
   const partnerCode = affiliate?.affiliateCode || 'OCV_AFF_888888';
+  const effectiveTargetUrl = targetUrl || `${effectiveBaseUrl}/${locale}`;
 
   // Clean double slashes in URL path
-  const cleanTargetUrl = targetUrl.trim().replace(/([^:]\/)\/+/g, '$1');
+  const cleanTargetUrl = effectiveTargetUrl.trim().replace(/([^:]\/)\/+/g, '$1');
   const hasQuery = cleanTargetUrl.includes('?');
   const generatedLink = `${cleanTargetUrl}${hasQuery ? '&' : '?'}ref=${partnerCode}&utm_source=${campaignTag}`;
 
@@ -97,11 +93,13 @@ export default function AffiliateLinksPage({ params }: { params: Promise<{ local
   };
 
   const presetPages = [
-    { label: 'Trang Chủ OrderChinaViet', url: `${baseUrl}/${locale}` },
-    { label: 'Trang Đăng Ký Tài Khoản Khách Hàng', url: `${baseUrl}/${locale}/register` },
-    { label: 'Biểu Phí Vận Chuyển Trung - Việt', url: `${baseUrl}/${locale}/rates` },
-    { label: 'Dịch Vụ Đặt Hàng 1688 Tận Xưởng', url: `${baseUrl}/${locale}/services/1688` },
-    { label: 'Tìm Kiếm & Nhập Hàng Tận Gốc', url: `${baseUrl}/${locale}/search` },
+    { label: 'Trang Chủ OrderChinaViet', url: `${effectiveBaseUrl}/${locale}` },
+    { label: 'Trang Đăng Ký Tài Khoản Khách Hàng', url: `${effectiveBaseUrl}/${locale}/register` },
+    { label: 'Biểu Phí Vận Chuyển Trung - Việt', url: `${effectiveBaseUrl}/${locale}/rates` },
+    { label: 'Dịch Vụ Đặt Hàng 1688 Tận Xưởng', url: `${effectiveBaseUrl}/${locale}/services/1688` },
+    { label: 'Dịch Vụ Vận Chuyển Trọn Gói', url: `${effectiveBaseUrl}/${locale}/services/van-chuyen` },
+    { label: 'Tìm Kiếm & Nhập Hàng Tận Gốc', url: `${effectiveBaseUrl}/${locale}/search` },
+    { label: 'Tuyển Dụng Cộng Tác Viên (Careers)', url: `${effectiveBaseUrl}/${locale}/careers` },
   ];
 
   const preWrittenMessages = [
@@ -151,51 +149,36 @@ export default function AffiliateLinksPage({ params }: { params: Promise<{ local
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-900">Trình Tạo Link Giới Thiệu Tùy Chọn</h2>
-              <p className="text-xs text-slate-500">Nhập hoặc chọn trang đích bất kỳ trên hệ thống OrderChinaViet</p>
+              <p className="text-xs text-slate-500">Chọn trang đích trên hệ thống OrderChinaViet và kênh quảng cáo</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">Chọn Trang Đích Mẫu Có Sẵn</label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {presetPages.map((preset, idx) => {
-                  const isSelected = cleanTargetUrl === preset.url.replace(/([^:]\/)\/+/g, '$1');
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setTargetUrl(preset.url)}
-                      className={`p-3 rounded-2xl border text-xs font-bold text-left transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-primary-50 text-primary-700 border-primary-300 shadow-2xs'
-                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                      }`}
-                    >
-                      {preset.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Đường Dẫn Trang Đích (Target URL)</label>
-              <input
-                type="text"
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                Chọn Trang Đích Mẫu Có Sẵn
+              </label>
+              <select
                 value={targetUrl}
                 onChange={(e) => setTargetUrl(e.target.value)}
-                placeholder={`${baseUrl}/${locale}/register`}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-900 focus:outline-none focus:border-primary-500 focus:bg-white"
-              />
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-primary-500 focus:bg-white cursor-pointer shadow-2xs"
+              >
+                {presetPages.map((preset, idx) => (
+                  <option key={idx} value={preset.url}>
+                    {preset.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Kênh Quảng Cáo (UTM Campaign Tag)</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                Kênh Quảng Cáo (UTM Campaign Tag)
+              </label>
               <select
                 value={campaignTag}
                 onChange={(e) => setCampaignTag(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-primary-500 cursor-pointer"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-primary-500 cursor-pointer shadow-2xs"
               >
                 <option value="zalo_chat">Zalo Chat &amp; Nhóm Sỉ</option>
                 <option value="facebook_ad">Facebook Post &amp; Ads</option>

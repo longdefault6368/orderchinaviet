@@ -52,12 +52,7 @@ import { authStore } from '@/lib/auth-store';
 import { notificationStore } from '@/lib/notification-store';
 import { settingsStore, ContactSettings, DEFAULT_CONTACT_SETTINGS } from '@/lib/settings-store';
 
-// Brand Assets
-import whatsappImg from '@/assets/images/whatsapp.png';
-import zaloImg from '@/assets/images/zalo.png';
-import telegramImg from '@/assets/images/telegram.webp';
-import wechatImg from '@/assets/images/wechat.webp';
-import facebookImg from '@/assets/images/facebook.webp';
+
 
 const VIETNAM_PROVINCES = [
   'Hà Nội',
@@ -129,7 +124,6 @@ const VIETNAM_PROVINCES = [
 export default function CareersPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = use(params);
   const [settings, setSettings] = useState<ContactSettings>(DEFAULT_CONTACT_SETTINGS);
-  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Income Calculator Simulation State - Expanded scale
   const [simCustomers, setSimCustomers] = useState<number>(15);
@@ -171,18 +165,7 @@ export default function CareersPage({ params }: { params: Promise<{ locale: Loca
     return () => window.removeEventListener('orderchinaviet_settings_updated', handleUpdate);
   }, []);
 
-  const handleCopy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 2000);
-  };
 
-  const getWhatsappUrl = (val: string) => {
-    if (!val) return 'https://wa.me/84352308304';
-    if (val.startsWith('http')) return val;
-    const cleanNumber = val.replace(/[^0-9]/g, '');
-    return `https://wa.me/${cleanNumber}`;
-  };
 
   // Realistic Scalable Income Formula:
   // Base Salary = 2,000,000 VND
@@ -260,7 +243,7 @@ export default function CareersPage({ params }: { params: Promise<{ locale: Loca
   const FAQS = [
     {
       q: 'Điều kiện để nhận lương cơ bản 2.000.000 ₫/tháng là gì?',
-      a: 'Bạn chỉ cần hoàn thành các bước chấm công online hằng ngày tại mục "Chấm Công" và duy trì hỗ trợ khách hàng. Khoản lương cứng 2.000.000 ₫ được thanh toán thẳng vào tài khoản ngân hàng của bạn vào ngày 05 hằng tháng.',
+      a: 'Bạn chỉ cần thực hiện chấm công Online (Check-in 1 chạm) vào các ngày làm việc hành chính trong tháng tại mục "Chấm Công" trên hệ thống và duy trì hỗ trợ khách hàng. Khoản lương cứng 2.000.000 ₫ được thanh toán thẳng vào tài khoản ngân hàng của bạn vào ngày 05 hằng tháng.',
     },
     {
       q: 'Tôi chưa có kinh nghiệm nhập hàng Trung Quốc có làm được không?',
@@ -744,223 +727,7 @@ export default function CareersPage({ params }: { params: Promise<{ locale: Loca
             </div>
           </div>
 
-          {/* ═══════════════════════════════════════════════════════════════════ */}
-          {/* SECTION 4: KÊNH LIÊN HỆ HỖ TRỢ TRỰC TIẾP 24/7 (ĐẦY ĐỦ LOGO ASSETS)  */}
-          {/* ═══════════════════════════════════════════════════════════════════ */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm space-y-6">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <span className="text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-3.5 py-1 rounded-full uppercase tracking-wider">
-                HỖ TRỢ ỨNG VIÊN TRỰC TIẾP
-              </span>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-                Kênh Trao Đổi &amp; Hỗ Trợ Ứng Tuyển 24/7
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                Bạn cần trao đổi trực tiếp trước khi nộp đơn? Đội ngũ nhân sự sẵn sàng tư vấn 1-1 qua các kênh dưới đây:
-              </p>
-            </div>
 
-            {/* Compact Grid of Contact Cards with Assets */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2.5 pt-2">
-              {/* WhatsApp */}
-              {settings.showWhatsappLink !== false && (
-                <div className="bg-white border border-slate-200 hover:border-emerald-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center p-1 shrink-0">
-                      <Image src={whatsappImg} alt="WhatsApp" width={20} height={20} className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-md">
-                      WhatsApp
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">WhatsApp</span>
-                    <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.whatsappLink || '+84 352 308 304'}>
-                      {settings.whatsappLink || '+84 352 308 304'}
-                    </span>
-                  </div>
-                  <a
-                    href={getWhatsappUrl(settings.whatsappLink)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    <span>Chat</span>
-                  </a>
-                </div>
-              )}
-
-              {/* Zalo */}
-              {settings.showZaloLink !== false && (
-                <div className="bg-white border border-slate-200 hover:border-blue-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center p-1 shrink-0">
-                      <Image src={zaloImg} alt="Zalo" width={20} height={20} className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-md">
-                      Zalo
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">Zalo Chat</span>
-                    <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.zaloLink || '0352308304'}>
-                      {settings.zaloLink || '0352308304'}
-                    </span>
-                  </div>
-                  <a
-                    href={(settings.zaloLink || 'https://zalo.me/84352308304').startsWith('http') ? (settings.zaloLink || 'https://zalo.me/84352308304') : `https://${settings.zaloLink}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-1.5 px-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    <span>Mở Zalo</span>
-                  </a>
-                </div>
-              )}
-
-              {/* Telegram */}
-              {settings.showTelegramLink !== false && (
-                <div className="bg-white border border-slate-200 hover:border-sky-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center p-1 shrink-0">
-                      <Image src={telegramImg} alt="Telegram" width={20} height={20} className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-1.5 py-0.5 rounded-md">
-                      Telegram
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">Telegram</span>
-                    <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.telegramLink || '@orderchinaviet'}>
-                      {settings.telegramLink || '@orderchinaviet'}
-                    </span>
-                  </div>
-                  <a
-                    href={(settings.telegramLink || 'https://t.me/orderchinaviet').startsWith('http') ? (settings.telegramLink || 'https://t.me/orderchinaviet') : `https://${settings.telegramLink}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-1.5 px-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    <span>Mở Chat</span>
-                  </a>
-                </div>
-              )}
-
-              {/* Facebook */}
-              {settings.showFacebookLink !== false && (
-                <div className="bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center p-1 shrink-0">
-                      <Image src={facebookImg} alt="Facebook" width={20} height={20} className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded-md">
-                      Fanpage
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">Facebook</span>
-                    <span className="text-[10px] text-slate-500 block truncate" title="Group & Fanpage Tuyển Dụng">
-                      Fanpage CSKH
-                    </span>
-                  </div>
-                  <a
-                    href={(settings.facebookLink || 'https://facebook.com/orderchinaviet').startsWith('http') ? (settings.facebookLink || 'https://facebook.com/orderchinaviet') : `https://${settings.facebookLink}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-1.5 px-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    <span>Vào Trang</span>
-                  </a>
-                </div>
-              )}
-
-              {/* WeChat */}
-              {settings.showWechatId !== false && (
-                <div className="bg-white border border-slate-200 hover:border-emerald-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center p-1 shrink-0">
-                      <Image src={wechatImg} alt="WeChat" width={20} height={20} className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-md">
-                      WeChat
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">WeChat ID</span>
-                    <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.wechatId || 'VN_Logistics_CN'}>
-                      {settings.wechatId || 'VN_Logistics_CN'}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleCopy(settings.wechatId || 'VN_Logistics_CN', 'wechat')}
-                    className="w-full py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    {copiedKey === 'wechat' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedKey === 'wechat' ? 'Đã Chép' : 'Chép ID'}</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Hotline */}
-              {settings.showHotline !== false && (
-                <div className="bg-white border border-slate-200 hover:border-rose-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
-                      <Phone className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200 px-1.5 py-0.5 rounded-md">
-                      Hotline
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">Tổng Đài</span>
-                    <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.hotline || '+84 352 308 304'}>
-                      {settings.hotline || '+84 352 308 304'}
-                    </span>
-                  </div>
-                  <a
-                    href={`tel:${(settings.hotline || '+84352308304').replace(/\s+/g, '')}`}
-                    className="w-full py-1.5 px-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <Phone className="w-3 h-3" />
-                    <span>Gọi Ngay</span>
-                  </a>
-                </div>
-              )}
-
-              {/* Email */}
-              {settings.showEmail !== false && (
-                <div className="bg-white border border-slate-200 hover:border-amber-300 rounded-2xl p-3 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between space-y-2">
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="w-7 h-7 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
-                      <Mail className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded-md">
-                      Email
-                    </span>
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-900 block truncate">Email CSKH</span>
-                    <span className="text-[10px] text-slate-500 font-mono block truncate" title={settings.email || 'support@orderchinaviet.com'}>
-                      {settings.email || 'support@orderchinaviet.com'}
-                    </span>
-                  </div>
-                  <a
-                    href={`mailto:${settings.email || 'support@orderchinaviet.com'}`}
-                    className="w-full py-1.5 px-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[11px] font-bold text-center transition-colors flex items-center justify-center gap-1 cursor-pointer"
-                  >
-                    <Mail className="w-3 h-3" />
-                    <span>Gửi Mail</span>
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
 
           {/* ═══════════════════════════════════════════════════════════════════ */}
           {/* SECTION 5: CÔNG CỤ DỰ TOÁN THU NHẬP (FINTECH SIMULATOR WIDGET)       */}

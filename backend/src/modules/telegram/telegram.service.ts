@@ -159,6 +159,16 @@ export class TelegramService {
     return { success: true, message: 'Kết nối Telegram Bot thành công! Đã gửi tin nhắn thử nghiệm tới nhóm/kênh.' };
   }
 
+  public static getAppUrl(): string {
+    return (
+      process.env.CLIENT_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.APP_URL ||
+      process.env.CORS_ORIGIN ||
+      'http://localhost:3000'
+    ).replace(/\/$/, '');
+  }
+
   /**
    * Bắn thông báo khi có ĐƠN MUA HỘ MỚI
    */
@@ -197,7 +207,7 @@ export class TelegramService {
             [
               {
                 text: 'Xem Chi Tiết Đơn Hàng',
-                url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/vi/admin/orders`,
+                url: `${this.getAppUrl()}/vi/admin/orders`,
               },
             ],
           ],
@@ -246,7 +256,7 @@ export class TelegramService {
             [
               {
                 text: 'Duyệt Rút Tiền Ngay',
-                url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/vi/admin/finance`,
+                url: `${this.getAppUrl()}/vi/admin/finance`,
               },
             ],
           ],
@@ -297,7 +307,7 @@ ${application.note ? `<b>Ghi chú:</b> <i>${application.note}</i>\n` : ''}
             [
               {
                 text: 'Duyệt Hồ Sơ & Cấp Link',
-                url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/vi/admin/job-applications`,
+                url: `${this.getAppUrl()}/vi/admin/job-applications`,
               },
             ],
           ],
@@ -344,7 +354,7 @@ ${application.note ? `<b>Ghi chú:</b> <i>${application.note}</i>\n` : ''}
             [
               {
                 text: 'Xử Lý Khiếu Nại',
-                url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/vi/admin/orders`,
+                url: `${this.getAppUrl()}/vi/admin/orders`,
               },
             ],
           ],
@@ -394,7 +404,7 @@ ${user.province ? `<b>Khu vực:</b> ${user.province}\n` : ''}${user.referredBy 
             [
               {
                 text: isAffiliate ? 'Xem Đối Tác Affiliate' : 'Quản Lý Khách Hàng',
-                url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/vi/admin/${isAffiliate ? 'finance' : 'users'}`,
+                url: `${this.getAppUrl()}/vi/admin/${isAffiliate ? 'finance' : 'users'}`,
               },
             ],
           ],

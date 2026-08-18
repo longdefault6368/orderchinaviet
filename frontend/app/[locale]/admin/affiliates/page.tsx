@@ -929,7 +929,7 @@ export default function AdminAffiliatesPage() {
                   <span>Link Tiếp Thị Liên Kết Mẫu</span>
                 </div>
                 <div className="p-2.5 bg-white border border-slate-200 rounded-xl font-mono text-[11px] text-sky-700 break-all">
-                  https://orderchinaviet.com/vi/register?ref={selectedAffiliate.customerCode}
+                  {typeof window !== 'undefined' ? window.location.origin : ''}/vi/register?ref={selectedAffiliate.customerCode}
                 </div>
               </div>
             </div>

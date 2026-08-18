@@ -7,6 +7,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === 'GET_APP_URL') {
+    chrome.tabs.query({}, (tabs) => {
+      let foundUrl = 'https://orderchinaviet.com';
+      for (const t of tabs) {
+        if (t.url) {
+          if (t.url.includes('localhost:3000')) { foundUrl = 'http://localhost:3000'; break; }
+          if (t.url.includes('orderchinaviet.com')) { foundUrl = 'https://orderchinaviet.com'; break; }
+        }
+      }
+      sendResponse({ url: foundUrl });
+    });
+    return true; // Keep response channel open
+  }
+
   if (request.action === 'FETCH_LINK_DATA') {
     fetchLinkData(request.url)
       .then((data) => sendResponse(data))

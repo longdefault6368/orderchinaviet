@@ -174,7 +174,7 @@ export class EmailService {
         return;
       }
 
-      const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+      const clientUrl = (process.env.CLIENT_URL || process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || 'http://localhost:3000').replace(/\/$/, '');
       const cleanLink = options.linkUrl?.startsWith('/') ? options.linkUrl : `/${options.linkUrl || 'admin'}`;
       const actionUrl = `${clientUrl}/vi${cleanLink}`;
 
@@ -273,7 +273,7 @@ export class EmailService {
       const config = await this.getSmtpConfig();
       if (!config || !config.host || !config.user || !config.pass) return;
 
-      const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+      const clientUrl = (process.env.CLIENT_URL || process.env.NEXT_PUBLIC_APP_URL || process.env.APP_URL || 'http://localhost:3000').replace(/\/$/, '');
       const cleanLink = options.linkUrl?.startsWith('/') ? options.linkUrl : `/${options.linkUrl || 'orders'}`;
       const actionUrl = `${clientUrl}/vi${cleanLink}`;
 

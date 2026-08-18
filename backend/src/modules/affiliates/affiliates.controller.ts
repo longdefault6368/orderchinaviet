@@ -122,6 +122,13 @@ affiliateRouter.post('/register', async (req, res, next) => {
         targetRole: 'CUSTOMER',
       },
     });
+    const clientUrl =
+      (req.headers.origin as string) ||
+      (req.headers.host ? `${req.protocol || 'http'}://${req.headers.host}` : '') ||
+      process.env.CLIENT_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      'http://localhost:3000';
+
     if (user?.email) {
       void EmailService.notifyCustomerAlert({
         toEmail: user.email,
@@ -133,7 +140,7 @@ affiliateRouter.post('/register', async (req, res, next) => {
           affiliateCode: data.affiliateCode,
           customerCode: user.customerCode,
           email: user.email,
-          referralLink: `${process.env.CLIENT_URL || 'http://localhost:3000'}/?ref=${data.affiliateCode}`,
+          referralLink: `${clientUrl.replace(/\/$/, '')}/vi/register?ref=${data.affiliateCode}`,
         },
       });
     }
